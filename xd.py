@@ -58,6 +58,3 @@ mostrarBinarios(cromosomas)
 mostrarDecimales(cromosomas)
 mostrarValores(cromosomas)
 calcularFitness((cromosomas))
-print ("as")
-
-
