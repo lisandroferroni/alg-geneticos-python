@@ -28,11 +28,13 @@ def calcularFitness (cromosomas):
     for x in range(0,len(cromosomas)):
         total = total + cromosomas[x].valor
     for x in range(0,len(cromosomas)):
-        cromosomas[x].fitness=cromosomas[x].valor/total       
+        cromosomas[x].fitness=int(round(100*cromosomas[x].valor/total))  
 
 #funcion del enunciado
 def f (dec):
     return ((dec/coef)**2)
+
+#def
 
 #Solo son prints de las cosas de los objetos
 def mostrarDecimales(cromosomas):
@@ -43,7 +45,7 @@ def mostrarBinarios(cromosomas):
         print (cromosomas[x].binario)
 def mostrarValores(cromosomas):
     for x in range (0,len(cromosomas)):
-        print (cromosomas[x].valor)
+        print (cromosomas[x].fitness)
 
 #var
 prob_crossover=0.75
@@ -56,5 +58,7 @@ cromosomas = crearPoblacionInicial(cantIndividuos)
 
 mostrarBinarios(cromosomas)
 mostrarDecimales(cromosomas)
-mostrarValores(cromosomas)
 calcularFitness((cromosomas))
+mostrarValores(cromosomas)
+
+
