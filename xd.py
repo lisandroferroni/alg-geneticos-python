@@ -91,13 +91,9 @@ def mostrarValores(cromosomas):
 def mostrarRuleta(ruleta):
     for x in range (0,100):
         print (ruleta[x].fitness)
-def mostrarHijos(hijos):
-    for x in range (0,10):
-        print (hijos[x].binario)
-        print (hijos[x].decimal)
 
 
-#var
+#variables
 prob_crossover=75
 prob_mutacion=5
 ciclos=20
@@ -106,18 +102,13 @@ cantIndividuos=10
 
 cromosomas = crearPoblacionInicial(cantIndividuos)
 
-#mostrarBinarios(cromosomas)
+mostrarBinarios(cromosomas)
 #mostrarDecimales(cromosomas)
-#calcularFitness((cromosomas))
+calcularFitness(cromosomas)
 #mostrarValores(cromosomas)
-#mostrarHijos(crossover(cromosomas))
 
+hijos=crossover(cromosomas)
+calcularFitness(hijos)
+mostrarBinarios(hijos)
 
-def asd (objeto):
-    objeto.num=0
-
-pruebaa=Prueba(4)
-print (pruebaa.num)
-asd(pruebaa)
-print(pruebaa.num)
 
