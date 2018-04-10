@@ -34,7 +34,32 @@ def calcularFitness (cromosomas):
 def f (dec):
     return ((dec/coef)**2)
 
-#def
+"""
+def crossover (cromosomas):
+    ruleta=crearRuleta(cromosomas)
+    for x in range (0,len(cromosomas)/2):
+        cromosoma1=ruleta[np.random.randint(1, 100)]
+        cromosoma2=ruleta[np.random.randint(1, 100)]
+        
+        if (np.random.randint(1, 100)<=prob_crossover):
+            puntoCorte=(np.random.randint(1, 30))
+            
+            """
+
+
+
+def crearRuleta(cromosomas):
+    ruleta=[]
+    for x in range (0,10):
+        for _ in range (0,cromosomas[x].fitness):
+            ruleta.extend([cromosomas[x]])
+    return ruleta
+
+        
+
+
+
+#def mutacion():
 
 #Solo son prints de las cosas de los objetos
 def mostrarDecimales(cromosomas):
@@ -46,10 +71,13 @@ def mostrarBinarios(cromosomas):
 def mostrarValores(cromosomas):
     for x in range (0,len(cromosomas)):
         print (cromosomas[x].fitness)
+def mostrarRuleta(ruleta):
+    for x in range (0,100):
+        print (ruleta[x].fitness)
 
 #var
-prob_crossover=0.75
-prob_mutacion=0.05
+prob_crossover=75
+prob_mutacion=5
 ciclos=20
 coef=2**30-1
 cantIndividuos=10
@@ -60,5 +88,3 @@ mostrarBinarios(cromosomas)
 mostrarDecimales(cromosomas)
 calcularFitness((cromosomas))
 mostrarValores(cromosomas)
-
-
