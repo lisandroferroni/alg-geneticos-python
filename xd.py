@@ -1,8 +1,4 @@
 import numpy as np 
-class Prueba:
-    def __init__(self,num):
-        self.num=num
-
 
 class Cromosoma:
     def __init__(self,binario):
@@ -10,6 +6,14 @@ class Cromosoma:
         self.decimal=binarioADecimal(binario)
         self.valor=f(binarioADecimal(binario))
         self.fitness=-1.0
+
+class Grafica:
+    def __init__(self,mejor,peor,promedio):
+        self.mejor=mejor
+        self.peor=peor
+        self.promedio=promedio
+
+
 
 #Pasando un binario devuelve el valor en decimal (float)
 def binarioADecimal (binario):
@@ -45,11 +49,11 @@ def crossover (cromosomas):
     ruleta=crearRuleta(cromosomas)
     hijos=[]
     for _ in range (0,int(len(cromosomas)/2)):
-        cromosoma1_bin=ruleta[np.random.randint(1, 100)]
-        cromosoma2_bin=ruleta[np.random.randint(1, 100)]
+        cromosoma1_bin=ruleta[np.random.randint(0, len(ruleta))]
+        cromosoma2_bin=ruleta[np.random.randint(0, len(ruleta))]
         
         if (np.random.randint(1, 100)<=prob_crossover):
-            puntoCorte=(np.random.randint(1, 30))
+            puntoCorte=(np.random.randint(1, len(cromosoma1_bin)))
             aux=cromosoma2_bin
             for x in range (puntoCorte,len(cromosoma2_bin)):
                 cromosoma2_bin[x]=cromosoma1_bin[x]
@@ -73,10 +77,27 @@ def mutar (cromosoma_bin):
 # (los 10 cromosomas repetidos segun su fitness)
 def crearRuleta(cromosomas):
     ruleta=[]
-    for x in range (0,10):
+    for x in range (0,cantIndividuos):
         for _ in range (0,cromosomas[x].fitness):
             ruleta.extend([cromosomas[x].binario])
     return ruleta
+
+def calcularGrafica (poblacion):
+    mejor=poblacion[0].valor
+    for x in range (1,len(poblacion)):
+        if (poblacion[x].valor>mejor):
+            mejor=poblacion[x].valor
+    peor=poblacion[0].valor
+    for x in range (1,len(poblacion)):
+        if (poblacion[x].valor<peor):
+            peor=poblacion[x].valor
+    suma=0
+    for x in range (0,len(poblacion)):
+        suma=suma+poblacion[x].valor
+    promedio=suma/len(poblacion)
+    grafica=Grafica(mejor,peor,promedio)
+    
+    return grafica
 
 #Solo son prints de las cosas de los objetos
 def mostrarDecimales(cromosomas):
@@ -94,21 +115,27 @@ def mostrarRuleta(ruleta):
 
 
 #variables
+
+ciclos=20
+coef=(2**30)-1
+cantIndividuos=10
 prob_crossover=75
 prob_mutacion=5
-ciclos=20
-coef=2**30-1
-cantIndividuos=10
 
+#"main"
 cromosomas = crearPoblacionInicial(cantIndividuos)
 
-mostrarBinarios(cromosomas)
-#mostrarDecimales(cromosomas)
-calcularFitness(cromosomas)
-#mostrarValores(cromosomas)
+grafica=[]
+grafica.extend([calcularGrafica(cromosomas)])
 
-hijos=crossover(cromosomas)
-calcularFitness(hijos)
-mostrarBinarios(hijos)
+
+for x in range (0,ciclos):
+    calcularFitness(cromosomas)
+    cromosomas=crossover(cromosomas)
+    grafica.extend([calcularGrafica(cromosomas)])
+    print(grafica[x].mejor)
+
+
+
 
 
