@@ -1,4 +1,5 @@
 import numpy as np 
+import random
 
 class Cromosoma:
     def __init__(self,binario):
@@ -52,24 +53,30 @@ def crossover (cromosomas):
         cromosoma1_bin=ruleta[np.random.randint(0, len(ruleta))]
         cromosoma2_bin=ruleta[np.random.randint(0, len(ruleta))]
         
-        if (np.random.randint(1, 100)<=prob_crossover):
+        
+        if (random.random()<=prob_crossover):
             puntoCorte=(np.random.randint(1, len(cromosoma1_bin)))
-            aux=cromosoma2_bin
+            aux=np.random.randint(2, size=30)
+            for x in range (0,len(cromosoma2_bin)):
+                aux[x]=cromosoma2_bin[x]
+
             for x in range (puntoCorte,len(cromosoma2_bin)):
                 cromosoma2_bin[x]=cromosoma1_bin[x]
                 cromosoma1_bin[x]=aux[x]
         cromosoma1_bin=mutar(cromosoma1_bin)
         cromosoma2_bin=mutar(cromosoma2_bin)
+       
 
         hijos.extend([Cromosoma(cromosoma1_bin)])
         hijos.extend([Cromosoma(cromosoma2_bin)])
-    
+        
     return hijos
+    
 
 #Cambia un bit del cromosoma con prob_mutacion de prob 
 def mutar (cromosoma_bin):
     for x in range (0,len(cromosoma_bin)):
-        if (np.random.randint(1, 100)<=prob_mutacion):
+        if (random.random()<=prob_mutacion):
             cromosoma_bin[x]=abs(cromosoma_bin[x]-1)
     return cromosoma_bin
 
@@ -108,10 +115,11 @@ def mostrarBinarios(cromosomas):
         print (cromosomas[x].binario)
 def mostrarValores(cromosomas):
     for x in range (0,len(cromosomas)):
-        print (cromosomas[x].fitness)
+        print (cromosomas[x].valor)
 def mostrarRuleta(ruleta):
     for x in range (0,100):
-        print (ruleta[x].fitness)
+        print (ruleta[x])
+    print("\n")
 
 
 #variables
@@ -119,23 +127,21 @@ def mostrarRuleta(ruleta):
 ciclos=20
 coef=(2**30)-1
 cantIndividuos=10
-prob_crossover=75
-prob_mutacion=5
+prob_crossover=0.75
+prob_mutacion=0
 
 #"main"
 cromosomas = crearPoblacionInicial(cantIndividuos)
 
 grafica=[]
 grafica.extend([calcularGrafica(cromosomas)])
-
+#print(grafica[0].mejor, "\t", grafica[0].peor, "\t", grafica[0].promedio)
 
 for x in range (0,ciclos):
     calcularFitness(cromosomas)
     cromosomas=crossover(cromosomas)
+    
     grafica.extend([calcularGrafica(cromosomas)])
-    print(grafica[x].mejor)
-
-
-
-
-
+    print(grafica[x+1].mejor, "\t", grafica[x+1].peor, "\t", grafica[x+1].promedio)
+#for _ in range (0,100):
+    #print(int(round(random.random()*100)))
