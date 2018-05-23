@@ -1,1 +1,0 @@
-# alg-geneticos-python xd
