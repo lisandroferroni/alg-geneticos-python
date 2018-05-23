@@ -145,8 +145,8 @@ def mostrarGrafica (grafica):
         lista2.extend([grafica[x].getPeor()])
         lista3.extend([grafica[x].getPromedio()])
     plt.plot(lista1, label = "Mejor Valor")
-    plt.plot(lista2, linestyle='--', label = "Peor Valor")
     plt.plot(lista3, linestyle='-.', label = "Promedio")
+    plt.plot(lista2, linestyle='--', label = "Peor Valor")
     plt.legend(loc="lower right")
     plt.ylim(0, 1.0)
     plt.xlabel("Generacion")
@@ -154,11 +154,11 @@ def mostrarGrafica (grafica):
     plt.show()
 
 #variables
-ciclos=100
+ciclos=200
 coeficiente=(2**30)-1
 cantIndividuos=10
 prob_crossover=0.75
-prob_mutacion=0.05
+prob_mutacion=0.5
 
 #"main"
 poblacion = crearPoblacionInicial(cantIndividuos)
