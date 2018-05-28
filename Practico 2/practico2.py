@@ -7,7 +7,8 @@ class Cromosoma:
         self.binario=binario
         self.decimal=binarioADecimal(binario)
         self.valor=f(binarioADecimal(binario))
-        self.fitness=-1.0
+        self.fitness=-1
+        self.elite=0
     def getValor(self):
         return self.valor
     def getBinario(self):
@@ -16,8 +17,13 @@ class Cromosoma:
         return self.fitness
     def getDecimal(self):
         return self.decimal
+    def getElite(self):
+        return self.elite
     def setFitness(self, fitness):
         self.fitness=fitness
+    def setElite(self,elite):
+        self.elite=elite
+    
 
 class Grafica:
     def __init__(self,mejor,peor,promedio,mejor_bin):
@@ -69,9 +75,16 @@ def calcularFitness (poblacion):
 # Muta cromosoma con prob_mutacion de probabilidad
 # Devuelve 10 cromosomas hijos
 def crossover (poblacion):
-    ruleta=crearRuleta(poblacion)
+    poblacion_aux=encontrarElite(poblacion)#poblacion sin los elite
     hijos=[]
-    for _ in range (0,int(len(poblacion)/2)):
+    
+    for x in range (0, len(poblacion)):
+        if (poblacion[x].getElite()==1):
+            hijos.extend([Cromosoma(poblacion[x].getBinario())])
+        
+    ruleta=crearRuleta(poblacion_aux)
+    
+    for _ in range (0,int(len(poblacion_aux)/2)):
         random.random()
         cromosoma1_bin=ruleta[np.random.randint(0, len(ruleta))]
         cromosoma2_bin=ruleta[np.random.randint(0, len(ruleta))]
@@ -93,6 +106,38 @@ def crossover (poblacion):
         hijos.extend([Cromosoma(cromosoma1_bin)])
         hijos.extend([Cromosoma(cromosoma2_bin)])
     return hijos
+
+# Establece 1 al valor de cromosoma.elite a los 2 mejores fitness
+# y devuelve la poblacion sin elite
+def encontrarElite(poblacion):
+    elite1=poblacion[0]
+    poblacion[0].setElite(1)
+    for x in range (1, len(poblacion)):
+        if (poblacion[x].getFitness()>elite1.getFitness()):
+            elite1.setElite(0)
+            poblacion[x].setElite(1)
+            elite1=poblacion[x]   
+    
+    if (poblacion[0].getElite()==0):
+        elite2=poblacion[0]
+        elite2.setElite(1)
+    else:
+        elite2=poblacion[1]
+        elite2.setElite(1)
+
+    for x in range (0, len(poblacion)):
+        if(poblacion[x].getElite()==1):
+            continue
+        if (poblacion[x].getFitness()>elite2.getFitness()):
+            elite2.setElite(0)
+            poblacion[x].setElite(1)
+            elite2=poblacion[x]   
+    poblacion_aux=[]
+    for x in range(0,len(poblacion)):
+        if (poblacion[x].getElite()==0):
+            poblacion_aux.extend([Cromosoma(poblacion[x].getBinario())])
+    return poblacion_aux
+    
     
 # Cambia un bit aleatorio del cromosoma 
 def mutar (cromosoma_bin):
@@ -109,7 +154,8 @@ def mutar (cromosoma_bin):
 # redondeado, puede ser que la ruleta tenga menos de 100)
 def crearRuleta(poblacion):
     ruleta=[]
-    for x in range (0,cantIndividuos):
+    calcularFitness(poblacion)
+    for x in range (0,len(poblacion)):
         for _ in range (0,poblacion[x].getFitness()):
             ruleta.extend([poblacion[x].getBinario()])
     return ruleta
@@ -158,7 +204,7 @@ ciclos=100
 coeficiente=(2**30)-1
 cantIndividuos=10
 prob_crossover=0.75
-prob_mutacion=0.05
+prob_mutacion=0.5
 
 #"main"
 poblacion = crearPoblacionInicial(cantIndividuos)
