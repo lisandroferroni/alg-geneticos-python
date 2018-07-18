@@ -32,6 +32,7 @@ s= [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1]
 voa = -1
 soa = [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1]
 suma = 0
+print('Valor\tSolucion\tVolumen')
 while (nivel!=-1):
     
     #Generar
@@ -42,7 +43,7 @@ while (nivel!=-1):
         #Solucion                      ]
     if (nivel==len(s)-1) and (suma<volMax) and (valor(s)>voa):
         voa=valor(s)
-        print (voa)
+        print (voa, ' ', s, suma)
         for x in range (0,len(s)):
             soa[x]=s[x]
         #Criterio
@@ -54,4 +55,3 @@ while (nivel!=-1):
             suma=suma-elemento[nivel].volumen*s[nivel]
             s[nivel]=-1
             nivel=nivel-1
-
