@@ -6,7 +6,7 @@ class Elemento:
         self.volumen=volumen
         self.valor=valor
 
-def valor (s):
+def valorS (s):
     suma=0
     for x in range (0, len (s)):
         if s[x]==1:
@@ -32,7 +32,7 @@ s= [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1]
 voa = -1
 soa = [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1]
 suma = 0
-print('Valor\tSolucion\tVolumen')
+print('Valor Total\tSolucion\tVolumen')
 while (nivel!=-1):
     
     #Generar
@@ -41,8 +41,8 @@ while (nivel!=-1):
     if s[nivel]==1:
         suma=suma+elemento[nivel].volumen
         #Solucion                      ]
-    if (nivel==len(s)-1) and (suma<volMax) and (valor(s)>voa):
-        voa=valor(s)
+    if (nivel==len(s)-1) and (suma<volMax) and (valorS(s)>voa):
+        voa=valorS(s)
         print (voa, ' ', s, suma)
         for x in range (0,len(s)):
             soa[x]=s[x]
