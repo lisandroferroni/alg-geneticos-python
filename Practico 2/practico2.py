@@ -75,16 +75,12 @@ def calcularFitness (poblacion):
 # Muta cromosoma con prob_mutacion de probabilidad
 # Devuelve 10 cromosomas hijos
 def crossover (poblacion):
-    poblacion_aux=encontrarElite(poblacion)#poblacion sin los elite
-    hijos=[]
     
-    for x in range (0, len(poblacion)):
-        if (poblacion[x].getElite()==1):
-            hijos.extend([Cromosoma(poblacion[x].getBinario())])
-        
-    ruleta=crearRuleta(poblacion_aux)
+    hijos=encontrarElite(poblacion)#devuelve elite
+
+    ruleta=crearRuleta(poblacion)
     
-    for _ in range (0,int(len(poblacion_aux)/2)):
+    for _ in range (0,int((len(poblacion)-len(hijos))/2)):
         random.random()
         cromosoma1_bin=ruleta[np.random.randint(0, len(ruleta))]
         cromosoma2_bin=ruleta[np.random.randint(0, len(ruleta))]
@@ -107,13 +103,13 @@ def crossover (poblacion):
         hijos.extend([Cromosoma(cromosoma2_bin)])
     return hijos
 
-# Establece 1 al valor de cromosoma.elite a los 2 mejores fitness
-# y devuelve la poblacion sin elite
+# Establece 1 al valor de cromosoma.elite a los 2 mejores valores
+# y los devuelve
 def encontrarElite(poblacion):
     elite1=poblacion[0]
     poblacion[0].setElite(1)
     for x in range (1, len(poblacion)):
-        if (poblacion[x].getFitness()>elite1.getFitness()):
+        if (poblacion[x].getValor()>elite1.getValor()):
             elite1.setElite(0)
             poblacion[x].setElite(1)
             elite1=poblacion[x]   
@@ -128,15 +124,16 @@ def encontrarElite(poblacion):
     for x in range (0, len(poblacion)):
         if(poblacion[x].getElite()==1):
             continue
-        if (poblacion[x].getFitness()>elite2.getFitness()):
+        if (poblacion[x].getValor()>elite2.getValor()):
             elite2.setElite(0)
             poblacion[x].setElite(1)
             elite2=poblacion[x]   
-    poblacion_aux=[]
+    hijos=[]
     for x in range(0,len(poblacion)):
-        if (poblacion[x].getElite()==0):
-            poblacion_aux.extend([Cromosoma(poblacion[x].getBinario())])
-    return poblacion_aux
+        if (poblacion[x].getElite()==1):
+            hijos.extend([Cromosoma(poblacion[x].getBinario())])
+    
+    return hijos
     
     
 # Cambia un bit aleatorio del cromosoma 
@@ -200,17 +197,23 @@ def mostrarGrafica (grafica):
     plt.show()
 
 #variables
-ciclos=100
+ciclos=300
 coeficiente=(2**30)-1
 cantIndividuos=10
 prob_crossover=0.75
-prob_mutacion=0.5
+prob_mutacion=0.05
 
 #"main"
 poblacion = crearPoblacionInicial(cantIndividuos)
+
+print(poblacion[0].getDecimal(),poblacion[1].getDecimal(),poblacion[2].getDecimal())
+asd=poblacion [0]
+asd.setElite(1)
+print(poblacion[0].getElite(),poblacion[1].getDecimal(),poblacion[2].getDecimal())
+
 grafica=[]
 grafica.extend([calcularLineaGrafica(poblacion)])
-print(grafica[0].getMejor_bin(),"\t",grafica[0].getMejor(), "\t", grafica[0].getPeor(), "\t", grafica[0].getPromedio())
+#print(grafica[0].getMejor_bin(),"\t",grafica[0].getMejor(), "\t", grafica[0].getPeor(), "\t", grafica[0].getPromedio())
 
 #Para imprimir en un txt usar esto:
 """text_file = open("Salida.txt", "w")
@@ -222,6 +225,6 @@ for x in range (0,ciclos):
     poblacion=crossover(poblacion)
     
     grafica.extend([calcularLineaGrafica(poblacion)])
-    print(grafica[x+1].getMejor_bin(),"\t", grafica[x+1].getMejor(), "\t", grafica[x+1].getPeor(), "\t", grafica[x+1].getPromedio())
+    #print(grafica[x+1].getMejor_bin(),"\t", grafica[x+1].getMejor(), "\t", grafica[x+1].getPeor(), "\t", grafica[x+1].getPromedio())
     #text_file.write(str(grafica[x+1].getMejor_bin()) + "\t"+str(grafica[x+1].getMejor())+"\t"+str(grafica[x+1].getPeor())+"\t"+str(grafica[x+1].getPromedio())+"\n")
 mostrarGrafica(grafica)
