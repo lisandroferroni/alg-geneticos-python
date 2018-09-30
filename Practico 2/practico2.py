@@ -8,7 +8,6 @@ class Cromosoma:
         self.decimal=binarioADecimal(binario)
         self.valor=f(binarioADecimal(binario))
         self.fitness=-1
-        self.elite=0
     def getValor(self):
         return self.valor
     def getBinario(self):
@@ -17,12 +16,9 @@ class Cromosoma:
         return self.fitness
     def getDecimal(self):
         return self.decimal
-    def getElite(self):
-        return self.elite
     def setFitness(self, fitness):
         self.fitness=fitness
-    def setElite(self,elite):
-        self.elite=elite
+   
     
 
 class Grafica:
@@ -76,12 +72,17 @@ def calcularFitness (poblacion):
 # Devuelve 10 cromosomas hijos
 def crossover (poblacion):
     
-    hijos=encontrarElite(poblacion)#devuelve elite
+    #Elite
+    poblacion = sorted(poblacion, key = lambda object : object.valor, reverse=True) 
+    hijos=[]
+    hijos.extend([poblacion[0]])
+    hijos.extend([poblacion[1]])
+    #Fin Elite
 
     ruleta=crearRuleta(poblacion)
     
     for _ in range (0,int((len(poblacion)-len(hijos))/2)):
-        random.random()
+        
         cromosoma1_bin=ruleta[np.random.randint(0, len(ruleta))]
         cromosoma2_bin=ruleta[np.random.randint(0, len(ruleta))]
                 
@@ -101,40 +102,7 @@ def crossover (poblacion):
        
         hijos.extend([Cromosoma(cromosoma1_bin)])
         hijos.extend([Cromosoma(cromosoma2_bin)])
-    return hijos
-
-# Establece 1 al valor de cromosoma.elite a los 2 mejores valores
-# y los devuelve
-def encontrarElite(poblacion):
-    elite1=poblacion[0]
-    poblacion[0].setElite(1)
-    for x in range (1, len(poblacion)):
-        if (poblacion[x].getValor()>elite1.getValor()):
-            elite1.setElite(0)
-            poblacion[x].setElite(1)
-            elite1=poblacion[x]   
-    
-    if (poblacion[0].getElite()==0):
-        elite2=poblacion[0]
-        elite2.setElite(1)
-    else:
-        elite2=poblacion[1]
-        elite2.setElite(1)
-
-    for x in range (0, len(poblacion)):
-        if(poblacion[x].getElite()==1):
-            continue
-        if (poblacion[x].getValor()>elite2.getValor()):
-            elite2.setElite(0)
-            poblacion[x].setElite(1)
-            elite2=poblacion[x]   
-    hijos=[]
-    for x in range(0,len(poblacion)):
-        if (poblacion[x].getElite()==1):
-            hijos.extend([Cromosoma(poblacion[x].getBinario())])
-    
-    return hijos
-    
+    return hijos    
     
 # Cambia un bit aleatorio del cromosoma 
 def mutar (cromosoma_bin):
