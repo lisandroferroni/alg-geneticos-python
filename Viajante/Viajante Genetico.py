@@ -140,7 +140,7 @@ def ciclicCrossover(padre1,padre2):
     while aux not in hijo1: #condicion de fin de ciclo
         hijo1[posActual] = aux
         aux = padre2[posActual]
-        posActual = padre1.index(aux)       
+        posActual = padre1.index(aux) #---> padre1[aux]       
         #posActual = padre1[padre2[posActual].getId()]#aca es donde se pone emocionante
         #aux=hijo1[posActual]
         #hijo1[posActual]=padre1[padre2.index(padre1)]
@@ -231,6 +231,10 @@ def printTrayectoria(poblacion):
         print (ciudades[idCiudad].getNombre())
     print("Distancia total recorrida: " + str(int(poblacion[0].getDistancia())) + " km.")
 
+def printCiudades(ciudades):
+    for x in range (0, len(ciudades)):
+        print(str(ciudades[x].getid()) + "- " + ciudades[x].getNombre())
+
 def algoritmoPrincipal(poblacion):
     poblacion = sorted(poblacion, key = lambda object : object.distancia) 
     hijos=[]
@@ -265,6 +269,7 @@ prob_mutacion=0.1
 #Main
 ciudades = cargaCiudades()
 print ("Ingrese num ciudad inicial (0-22)")
+printCiudades(ciudades)
 num = int(input())
 #num = 0
 grafica=[]
