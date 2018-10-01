@@ -77,20 +77,20 @@ def calcularElite(poblacion):
 
 def crearRuleta(poblacion):
     ruleta=[]
-    calcularFitness2(poblacion)          #asigna fitness con valores enteros.
+    calcularFitness(poblacion)          #asigna fitness con valores enteros.
     for x in range (0,len(poblacion)):  #Por cada cromosoma:
         for _ in range (0,poblacion[x].getFitness()): 
             ruleta.extend([poblacion[x].getTrayectoria()])
     return ruleta
 
-def calcularFitness (poblacion):
+def calcularFitness (poblacion):    #Quedan los fitnes parecidos pero no iguales
     total=0.0
     for x in range(0,len(poblacion)):
         total = total + 1/poblacion[x].getDistancia()
     for x in range(0,len(poblacion)):
         poblacion[x].setFitness(int(round(100/poblacion[x].getDistancia()/total)))
 
-def calcularFitness2 (poblacion):
+def calcularFitness2 (poblacion):  #muy impresiso, quedan todos fitnes iguales
     sumaDistancias = 0.0
     for dist in poblacion:
         sumaDistancias = sumaDistancias + dist.getDistancia()
