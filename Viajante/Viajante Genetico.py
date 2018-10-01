@@ -1,7 +1,7 @@
 import numpy as np 
 import random
 import matplotlib.pyplot as plt
-from math import radians, sin, cos, sqrt, asin, atan, atan2
+from math import radians, sin, cos, sqrt, asin, atan, atan2, exp
 class Cromosoma:
     def __init__(self,trayectoria):
         self.trayectoria = trayectoria
@@ -94,7 +94,7 @@ def calcularElite(poblacion):
 
 def crearRuleta(poblacion):
     ruleta=[]
-    calcularFitness(poblacion)          #asigna fitness con valores enteros.
+    calcularFitness3(poblacion)          #asigna fitness con valores enteros.
     for x in range (0,len(poblacion)):  #Por cada cromosoma:
         for _ in range (0,poblacion[x].getFitness()): 
             ruleta.extend([poblacion[x].getTrayectoria()])
@@ -105,7 +105,18 @@ def calcularFitness (poblacion):    #Quedan los fitnes parecidos pero no iguales
     for x in range(0,len(poblacion)):
         total = total + 1/poblacion[x].getDistancia()
     for x in range(0,len(poblacion)):
-        poblacion[x].setFitness(int(round(100/poblacion[x].getDistancia()/total)))
+        poblacion[x].setFitness(int(round(10000/poblacion[x].getDistancia()/total)))
+
+def calcularFitness3 (poblacion):
+    total = 0.0
+    valor = []
+    for x in range (0, len(poblacion)): 
+        dist = poblacion[x].getDistancia()/10000  #dividido por mil para que quede de dos cifras como max
+        valor.extend([exp(dist)])
+        total = total + 1/valor[x]
+    for x in range (0, len(poblacion)):
+        poblacion[x].setFitness(int(round(10000/valor[x]/total)))
+
 
 def calcularFitness2 (poblacion):  #muy impresiso, quedan todos fitnes iguales
     sumaDistancias = 0.0
@@ -193,7 +204,6 @@ def mostrarGrafica (grafica):
     plt.ylabel("Distancia")
     plt.show()
 
-
 def cargaCiudades():
     ciudades=[]
     ciudades.extend([ciudad("Buenos Aires",-34.599722, -58.381944)])
@@ -239,8 +249,7 @@ def printTrayectoria(poblacion):
         distanciaParcial = calc_distance(lat1, lon1, lat2, lon2)
         distanciaTotal = distanciaTotal + distanciaParcial
         print (ciudades[trayectoria[x+1]].getNombre() + " - "  + str (int(distanciaParcial)) + " km.")
-    print("Distancia total recorrida: " + str(int(poblacion[0].getDistancia())) + " km.")
-
+    print("\nDistancia total recorrida: " + str(int(poblacion[0].getDistancia())) + " km.")
 
 def printCiudades(ciudades):
     for x in range (0, len(ciudades)):
@@ -273,18 +282,18 @@ def algoritmoPrincipal(poblacion):
 
 #variables
 ciclos=500
-cantIndividuos=50
+cantIndividuos=30
 prob_crossover=0.9
-prob_mutacion=0.5
+prob_mutacion=0.0
 
 #Main
+
 ciudades = cargaCiudades()
 print ("Ingrese num ciudad inicial (0-22)")
 printCiudades(ciudades)
 num = int(input())
 #num = 0
 grafica=[]
-
 
 poblacion = crearPoblacionInicial(num)
 grafica.extend([calcularLineaGrafica(poblacion)])
