@@ -30,6 +30,8 @@ class ciudad:
         return self.lat
     def getLon(self):
         return self.lon
+    def getNombre(self):
+        return self.nombre
 
 class LineaGrafica:
     def __init__(self,mejor,peor,promedio,trayectoria):
@@ -221,6 +223,15 @@ def cargaCiudades():
         ciudades[x].setId(x)
     return ciudades
 
+def printTrayectoria(poblacion):
+    poblacion = sorted(poblacion, key = lambda object : object.distancia)
+    trayectoria = poblacion[0].getTrayectoria()
+    print("\n\nRecorrido:\n")
+    for idCiudad in trayectoria:
+        print (ciudades[idCiudad].getNombre())
+    print("Distancia total recorrida: " + str(int(poblacion[0].getDistancia())) + " km.")
+
+
 def algoritmoPrincipal(poblacion):
     poblacion = sorted(poblacion, key = lambda object : object.distancia) 
     hijos=[]
@@ -250,13 +261,13 @@ def algoritmoPrincipal(poblacion):
 ciclos=200
 cantIndividuos=50
 prob_crossover=0.75
-prob_mutacion=0.05
+prob_mutacion=0.1
 
 #Main
 ciudades = cargaCiudades()
 print ("Ingrese num ciudad inicial (0-22)")
-#num = int(input())
-num = 0
+num = int(input())
+#num = 0
 grafica=[]
 
 
@@ -266,6 +277,7 @@ grafica.extend([calcularLineaGrafica(poblacion)])
 for _ in range (0,ciclos):
     poblacion = algoritmoPrincipal(poblacion)
     grafica.extend([calcularLineaGrafica(poblacion)])
-mostrarGrafica(grafica)
+#mostrarGrafica(grafica)
+printTrayectoria(poblacion)
 
 print()
