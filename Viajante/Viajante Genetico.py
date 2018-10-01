@@ -114,8 +114,9 @@ def ciclicCrossover(padrex1,padrex2):
     hijo2=[] 
 
     for i in range(0, 22):   #les pongo a todos menos uno para indicar que no estan asignados     
-        hijo1[i]=-1 
-        hijo2[i]=-1
+        hijo1=[-1 for _ in range(22)]
+        hijo2=[-1 for _ in range(22)]
+
 
     aux=padre1[0]    
     aux=padre1[0] #primer paso del ciclico
@@ -211,3 +212,6 @@ poblacion = crearPoblacionInicial(num)
 for x in range (0,ciclos):
     hijos = algoritmoPrincipal(poblacion)
 print()
+
+
+print(ciclicCrossover(poblacion[0],poblacion[1]))
