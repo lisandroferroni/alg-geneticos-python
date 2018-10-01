@@ -121,20 +121,18 @@ def calcularFitness2 (poblacion):  #muy impresiso, quedan todos fitnes iguales
         poblacion[x].setFitness(int(round(100*puntaje[x]/sumaPuntajes)))
 
 #crossover ciclico
-def ciclicCrossover(padrex1,padrex2):
-    posActual=0 #variable aux 
-    padre1 = padrex1.getTrayectoria()
-    padre2 = padrex2.getTrayectoria()
+def ciclicCrossover(padre1,padre2):
+    posActual=1 #variable aux 
     hijo1=[] #instancio los pibes
     hijo2=[] 
 
-    for i in range(0, 22):   #les pongo a todos menos uno para indicar que no estan asignados     
-        hijo1=[-1 for _ in range(22)]
-        hijo2=[-1 for _ in range(22)]
+    for i in range(0, len(padre1)):   #les pongo a todos menos uno para indicar que no estan asignados     
+        hijo1 [i] = -1
+        hijo2 [i] = -1
 
 
-    aux=padre1[0]    
-    aux=padre1[0] #primer paso del ciclico
+    aux=padre1[1]    
+    aux=padre1[1] #primer paso del ciclico
     
 
     while aux not in hijo1: #condicion de fin de ciclo
@@ -145,7 +143,7 @@ def ciclicCrossover(padrex1,padrex2):
         #aux=hijo1[posActual]
         #hijo1[posActual]=padre1[padre2.index(padre1)]
 
-    for j in range(0, 22):
+    for j in range(1, len(padre1)-1):
         if (hijo1[j] == -1):
             hijo1[j] = padre2[j]
             hijo2[j] = padre1[j]
@@ -252,7 +250,7 @@ def algoritmoPrincipal(poblacion):
 ciclos=200
 cantIndividuos=50
 prob_crossover=0.75
-prob_mutacion=1
+prob_mutacion=0.05
 
 #Main
 ciudades = cargaCiudades()
@@ -263,7 +261,6 @@ grafica=[]
 
 
 poblacion = crearPoblacionInicial(num)
-<<<<<<< HEAD
 grafica.extend([calcularLineaGrafica(poblacion)])
 
 for _ in range (0,ciclos):
@@ -272,11 +269,3 @@ for _ in range (0,ciclos):
 mostrarGrafica(grafica)
 
 print()
-=======
-for x in range (0,ciclos):
-    hijos = algoritmoPrincipal(poblacion)
-print()
-
-
-print(ciclicCrossover(poblacion[0],poblacion[1]))
->>>>>>> fb792959cdfbc82bd36b75564c3a721eb47cb098
