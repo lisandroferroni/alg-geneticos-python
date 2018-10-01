@@ -231,7 +231,6 @@ def printTrayectoria(poblacion):
         print (ciudades[idCiudad].getNombre())
     print("Distancia total recorrida: " + str(int(poblacion[0].getDistancia())) + " km.")
 
-
 def algoritmoPrincipal(poblacion):
     poblacion = sorted(poblacion, key = lambda object : object.distancia) 
     hijos=[]
@@ -277,7 +276,7 @@ grafica.extend([calcularLineaGrafica(poblacion)])
 for _ in range (0,ciclos):
     poblacion = algoritmoPrincipal(poblacion)
     grafica.extend([calcularLineaGrafica(poblacion)])
-#mostrarGrafica(grafica)
 printTrayectoria(poblacion)
+mostrarGrafica(grafica)
 
 print()
