@@ -105,7 +105,6 @@ def calcularFitness2 (poblacion):  #muy impresiso, quedan todos fitnes iguales
     for x in range(0, len(poblacion)):
         poblacion[x].setFitness(int(round(100*puntaje[x]/sumaPuntajes)))
 
-
 #crossover ciclico
 def ciclicCrossover(padrex1,padrex2):
     posActual=0 #variable aux 
@@ -140,7 +139,10 @@ def ciclicCrossover(padrex1,padrex2):
     hijox2= Cromosoma(hijo2)
     return hijox1,hijox2
 
-def mutar (padre):
+def mutar (padre):    
+    a, b = random.randint(1,22), random.randint(1,22)
+    padre[b], padre[a] = padre[a], padre[b]
+
     return padre
 
 def cargaCiudades():
@@ -183,6 +185,7 @@ def algoritmoPrincipal(poblacion):
         if (random.random()<=prob_crossover):       #probabilidad de crossover
             #padre1,padre2 = ciclicCrossover (padre1,padre2)
             pass    #borrar esta linea cuando ande el crossover
+        
         if (random.random()<=prob_mutacion):     #probabilidad de mutacion
             padre1 = mutar(padre1)              
             padre2 = mutar(padre2)
@@ -205,7 +208,6 @@ print ("Ingrese num ciudad inicial (0-22)")
 num = 0
 
 poblacion = crearPoblacionInicial(num)
-
 for x in range (0,ciclos):
     hijos = algoritmoPrincipal(poblacion)
 print()
