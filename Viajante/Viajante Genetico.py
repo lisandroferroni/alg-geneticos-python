@@ -227,9 +227,20 @@ def printTrayectoria(poblacion):
     poblacion = sorted(poblacion, key = lambda object : object.distancia)
     trayectoria = poblacion[0].getTrayectoria()
     print("\n\nRecorrido:\n")
-    for idCiudad in trayectoria:
-        print (ciudades[idCiudad].getNombre())
+    
+    distanciaTotal = 0
+
+    print (ciudades[trayectoria[0]].getNombre())
+    for x in range (0,len(trayectoria)-1):
+        lat1 = ciudades[trayectoria[x]].getLat()
+        lon1 = ciudades[trayectoria[x]].getLon()
+        lat2 = ciudades[trayectoria[x+1]].getLat()
+        lon2 = ciudades[trayectoria[x+1]].getLon()
+        distanciaParcial = calc_distance(lat1, lon1, lat2, lon2)
+        distanciaTotal = distanciaTotal + distanciaParcial
+        print (ciudades[trayectoria[x+1]].getNombre() + " - "  + str (int(distanciaParcial)) + " km.")
     print("Distancia total recorrida: " + str(int(poblacion[0].getDistancia())) + " km.")
+
 
 def printCiudades(ciudades):
     for x in range (0, len(ciudades)):
@@ -261,10 +272,10 @@ def algoritmoPrincipal(poblacion):
 
 
 #variables
-ciclos=200
+ciclos=500
 cantIndividuos=50
-prob_crossover=0.75
-prob_mutacion=0.1
+prob_crossover=0.9
+prob_mutacion=0.5
 
 #Main
 ciudades = cargaCiudades()
