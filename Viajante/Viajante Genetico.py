@@ -31,9 +31,24 @@ class ciudad:
     def getLon(self):
         return self.lon
 
+class LineaGrafica:
+    def __init__(self,mejor,peor,promedio,trayectoria):
+        self.mejor=mejor
+        self.peor=peor
+        self.promedio=promedio
+        self.trayectoria=trayectoria
+    def getMejor(self):
+        return self.mejor
+    def getPeor(self):
+        return self.peor
+    def getPromedio(self):
+        return self.promedio
+    def getTrayectoria(self):
+        return self.trayectoria
+
 def calculaDistanciaTotal(trayectoria):
     distanciaTotal = 0
-    for x in range (0,23):
+    for x in range (0,len(trayectoria)-1):
         lat1 = ciudades[trayectoria[x]].getLat()
         lon1 = ciudades[trayectoria[x]].getLon()
         lat2 = ciudades[trayectoria[x+1]].getLat()
@@ -71,8 +86,8 @@ def crearPoblacionInicial(num):
 def calcularElite(poblacion):
     poblacion = sorted(poblacion, key = lambda object : object.distancia) 
     hijos=[]
-    hijos.extend([poblacion[0]])
-    hijos.extend([poblacion[1]])
+    hijos.extend([Cromosoma(poblacion[0].getTrayectoria())])
+    hijos.extend([Cromosoma(poblacion[1].getTrayectoria())])
     return hijos
 
 def crearRuleta(poblacion):
@@ -145,6 +160,39 @@ def mutar (padre):
 
     return padre
 
+def calcularLineaGrafica (poblacion):
+    poblacion = sorted(poblacion, key = lambda object : object.distancia)
+    mejor=poblacion[0].getDistancia()
+    trayectoria = poblacion[0].getTrayectoria()
+    peor=poblacion[len(poblacion)-1].getDistancia()
+
+    suma = 0
+    for x in range (0,len(poblacion)):
+        suma = suma+poblacion[x].getDistancia()
+    promedio = suma/len(poblacion)
+
+    lineaGrafica = LineaGrafica(mejor,peor,promedio,trayectoria)
+    
+    return lineaGrafica
+
+def mostrarGrafica (grafica):
+    lista1=[]
+    lista2=[]
+    lista3=[]
+    for x in range (0,len(grafica)):
+        lista1.extend([grafica[x].getMejor()])
+        lista2.extend([grafica[x].getPeor()])
+        lista3.extend([grafica[x].getPromedio()])
+    plt.plot(lista1, label = "Mejor Valor")
+    plt.plot(lista2, linestyle='--', label = "Peor Valor")
+    plt.plot(lista3, linestyle='-.', label = "Promedio")
+    plt.legend(loc="lower right")
+    plt.ylim(10000.0, 30000.0)
+    plt.xlabel("Generacion")
+    plt.ylabel("Distancia")
+    plt.show()
+
+
 def cargaCiudades():
     ciudades=[]
     ciudades.extend([ciudad("Buenos Aires",-34.599722, -58.381944)])
@@ -175,7 +223,11 @@ def cargaCiudades():
     return ciudades
 
 def algoritmoPrincipal(poblacion):
-    hijos = calcularElite(poblacion)        #pasan los 2 cromosomas con menor distancia
+    poblacion = sorted(poblacion, key = lambda object : object.distancia) 
+    hijos=[]
+    hijos.extend([poblacion[0]])
+    hijos.extend([poblacion[1]])        #pasan los 2 cromosomas con menor distancia
+
     ruleta = crearRuleta(poblacion)         #Ruleta es lista de trayectorias
     for _ in range (0,int((len(poblacion)-len(hijos))/2)):
 
@@ -196,18 +248,25 @@ def algoritmoPrincipal(poblacion):
 
 
 #variables
-ciclos=1
-cantIndividuos=10
+ciclos=200
+cantIndividuos=50
 prob_crossover=0.75
-prob_mutacion=0.05
+prob_mutacion=1
 
 #Main
 ciudades = cargaCiudades()
 print ("Ingrese num ciudad inicial (0-22)")
 #num = int(input())
 num = 0
+grafica=[]
+
 
 poblacion = crearPoblacionInicial(num)
-for x in range (0,ciclos):
-    hijos = algoritmoPrincipal(poblacion)
+grafica.extend([calcularLineaGrafica(poblacion)])
+
+for _ in range (0,ciclos):
+    poblacion = algoritmoPrincipal(poblacion)
+    grafica.extend([calcularLineaGrafica(poblacion)])
+mostrarGrafica(grafica)
+
 print()
