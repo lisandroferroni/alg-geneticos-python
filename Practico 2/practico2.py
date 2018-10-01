@@ -174,17 +174,9 @@ prob_mutacion=0.5
 poblacion = crearPoblacionInicial(cantIndividuos)
 grafica=[]
 grafica.extend([calcularLineaGrafica(poblacion)])
-#print(grafica[0].getMejor_bin(),"\t",grafica[0].getMejor(), "\t", grafica[0].getPeor(), "\t", grafica[0].getPromedio())
 
-#Para imprimir en un txt usar esto:
-"""text_file = open("Salida.txt", "w")
-#text_file.write("Mejor\t\t\tPeor\t\t\tPromedio\n")
-#text_file.write(str(grafica[0].getMejor_bin()) + "\t"+str(grafica[0].getMejor())+"\t"+str(grafica[0].getPeor())+"\t"+str(grafica[0].getPromedio())+"\n")
-"""
 for x in range (0,ciclos):
-    poblacion=crossover(poblacion)
-    
+    poblacion=crossover(poblacion)   
     grafica.extend([calcularLineaGrafica(poblacion)])
-    #print(grafica[x+1].getMejor_bin(),"\t", grafica[x+1].getMejor(), "\t", grafica[x+1].getPeor(), "\t", grafica[x+1].getPromedio())
-    #text_file.write(str(grafica[x+1].getMejor_bin()) + "\t"+str(grafica[x+1].getMejor())+"\t"+str(grafica[x+1].getPeor())+"\t"+str(grafica[x+1].getPromedio())+"\n")
+    
 mostrarGrafica(grafica)
