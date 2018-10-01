@@ -100,8 +100,7 @@ def crossover (poblacion):
             cromosoma1_bin=mutar(cromosoma1_bin)
             cromosoma2_bin=mutar(cromosoma2_bin)
        
-        hijos.extend([Cromosoma(cromosoma1_bin)])
-        hijos.extend([Cromosoma(cromosoma2_bin)])
+        hijos.extend([Cromosoma(cromosoma1_bin), Cromosoma(cromosoma2_bin)])
     return hijos    
     
 # Cambia un bit aleatorio del cromosoma 
@@ -169,16 +168,10 @@ ciclos=300
 coeficiente=(2**30)-1
 cantIndividuos=10
 prob_crossover=0.75
-prob_mutacion=0.05
+prob_mutacion=0.5
 
 #"main"
 poblacion = crearPoblacionInicial(cantIndividuos)
-
-print(poblacion[0].getDecimal(),poblacion[1].getDecimal(),poblacion[2].getDecimal())
-asd=poblacion [0]
-asd.setElite(1)
-print(poblacion[0].getElite(),poblacion[1].getDecimal(),poblacion[2].getDecimal())
-
 grafica=[]
 grafica.extend([calcularLineaGrafica(poblacion)])
 #print(grafica[0].getMejor_bin(),"\t",grafica[0].getMejor(), "\t", grafica[0].getPeor(), "\t", grafica[0].getPromedio())
@@ -189,7 +182,6 @@ grafica.extend([calcularLineaGrafica(poblacion)])
 #text_file.write(str(grafica[0].getMejor_bin()) + "\t"+str(grafica[0].getMejor())+"\t"+str(grafica[0].getPeor())+"\t"+str(grafica[0].getPromedio())+"\n")
 """
 for x in range (0,ciclos):
-    calcularFitness(poblacion)
     poblacion=crossover(poblacion)
     
     grafica.extend([calcularLineaGrafica(poblacion)])
