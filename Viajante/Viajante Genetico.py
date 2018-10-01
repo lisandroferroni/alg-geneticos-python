@@ -14,7 +14,7 @@ class Cromosoma:
     def setFitness(self, fitness):
         self.fitness=fitness    
     def getTrayectoria(self):
-        return self.trayectoria
+        return self.trayectoria   
 
 class ciudad:
     def __init__(self,nombre,lat,lon):
@@ -83,6 +83,40 @@ def crearRuleta(poblacion):
             ruleta.extend([poblacion[x].getTrayectoria()])
     return ruleta
 
+#crossover ciclico
+def ciclicCrossover(padrex1,padrex2):
+    posActual=0 #variable aux 
+    padre1 = padrex1.getTrayectoria
+    padre2 = padrex2.getTrayectoria
+    hijo1=[] #instancio los pibes
+    hijo2=[] 
+
+    for i in range(0, 22):   #les pongo a todos menos uno para indicar que no estan asignados     
+        hijo1[i]=-1 
+        hijo2[i]=-1
+
+    aux=padre1[0]    
+    aux=padre1[0] #primer paso del ciclico
+    
+
+    while aux not in hijo1: #condicion de fin de ciclo
+        hijo1[posActual] = aux
+        aux = padre2[posActual]
+        posActual = padre1.index(aux)       
+        #posActual = padre1[padre2[posActual].getId()]#aca es donde se pone emocionante
+        #aux=hijo1[posActual]
+        #hijo1[posActual]=padre1[padre2.index(padre1)]
+
+    for j in range(0, 22):
+        if (hijo1[j] == -1):
+            hijo1[j] = padre2[j]
+            hijo2[j] = padre1[j]
+        else:
+            hijo2[j] = padre2[j]  
+    hijox1= Cromosoma(hijo1)
+    hijox2= Cromosoma(hijo2)
+    return hijox1,hijox2
+
 ciudades=[]
 ciudades.extend([ciudad("Buenos Aires",-34.599722, -58.381944)])
 ciudades.extend([ciudad("Córdoba",-31.416667, -64.183333)])
@@ -125,6 +159,7 @@ num = 0
 
 poblacion = crearPoblacionInicial(num)
 calcularFitness(poblacion)
+
 print()
 
 """Elite
