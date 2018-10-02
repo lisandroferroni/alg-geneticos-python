@@ -20,6 +20,8 @@ class ciudad:
         return self.lat
     def getLon(self):
         return self.lon
+    def getNombre(self):
+        return self.nombre
 
 
 def calc_distance(lat1, lon1, lat2, lon2): 
@@ -34,6 +36,9 @@ def calc_distance(lat1, lon1, lat2, lon2):
   c = 2*asin(sqrt(a))
  
   return (R * c)
+def printCiudades (ciudades):
+    for x in range (0, len(ciudades)):
+        print(str(x) + "- " + ciudades[x].getNombre())
 
 
 ciudades=[]
@@ -62,12 +67,14 @@ ciudades.extend([ciudad("Ushuaia",-54.807222, -68.304444)])
 ciudades.extend([ciudad("S. M. de Tucumán",-26.816667, -65.216667)])
 
 print ("Ingrese num ciudad inicial (0-22)")
+printCiudades(ciudades)
 num = int(input())
 ciudadActual = ciudades[num]          #El num que ingresa es ciudad inicial y final del recorrido
 ciudadFinal = ciudades[num]
 distanciaTotal = 0                    #Inicializa el acumulador de distancias
 ciudadActual.setEstado(1)             #Marca ciudad inicial como usada
 
+print("Recorrido:\n\n" + ciudadActual.getNombre())
 for x in range (0,22):
     distanciaMin = 5000.0             #Se asigna numero elevado para calcular el menor luego
     ciudadProxima = None              #Libera la variable
@@ -84,9 +91,9 @@ for x in range (0,22):
     distanciaTotal = distanciaTotal + distanciaMin   #Acumula distancia total
     ciudadActual = ciudadProxima                     #Actualiza ciudad actual con la de menor distancia,   
     ciudadActual.setEstado(1)                        #y la marca como usada
-    print (ciudadActual.nombre + "- " + str (distanciaMin))
+    print (ciudadActual.nombre + "- " + str (int(distanciaMin)) + " km.")
 
 distanciaAInicial = calc_distance(ciudadActual.getLat(),ciudadActual.getLon(),ciudadFinal.getLat(),ciudadFinal.getLon())
 distanciaTotal = distanciaTotal + distanciaAInicial
-print (ciudadFinal.nombre + "- " + str (distanciaAInicial))
-print("\nLa distancia total recorrida es: " + str(distanciaTotal))
+print (ciudadFinal.nombre + "- " + str (int(distanciaAInicial)) + " km.")
+print("\nLa distancia total recorrida es: " + str(int(distanciaTotal)) + " km.")
