@@ -141,7 +141,7 @@ def ciclicCrossover(padre1,padre2):
     hijo1.append(0)
     hijo2.append(0) 
 
-    for i in range(0, len(padre1)):   #les pongo a todos menos uno para indicar que no estan asignados     
+    for i in range(1, len(padre1)-1):   #les pongo a todos menos uno para indicar que no estan asignados     
         hijo1.append(-1)
         hijo2.append(-1)
 
@@ -164,9 +164,9 @@ def ciclicCrossover(padre1,padre2):
             hijo2[j] = padre1[j]
         else:
             hijo2[j] = padre2[j]  
-    hijox1= Cromosoma(hijo1)
-    hijox2= Cromosoma(hijo2)
-    return hijox1,hijox2
+    #hijox1= Cromosoma(hijo1)
+    #hijox2= Cromosoma(hijo2)
+    return hijo1,hijo2
 
 def mutar (padre):    
     a, b = random.randint(1,22), random.randint(1,22)
