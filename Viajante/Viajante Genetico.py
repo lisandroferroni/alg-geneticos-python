@@ -137,14 +137,16 @@ def calcularFitness2 (poblacion):  #muy impresiso, quedan todos fitnes iguales
 def ciclicCrossover(padre1,padre2):
     posActual=1 #variable aux 
     hijo1=[] #instancio los pibes
-    hijo2=[] 
+    hijo2=[]
+    hijo1.append(0)
+    hijo2.append(0) 
 
     for i in range(0, len(padre1)):   #les pongo a todos menos uno para indicar que no estan asignados     
-        hijo1 [i] = -1
-        hijo2 [i] = -1
+        hijo1.append(-1)
+        hijo2.append(-1)
 
 
-    aux=padre1[1]    
+    hijo1[0]=0
     aux=padre1[1] #primer paso del ciclico
     
 
@@ -262,14 +264,14 @@ def algoritmoPrincipal(poblacion):
     hijos.extend([poblacion[1]])        #pasan los 2 cromosomas con menor distancia
 
     ruleta = crearRuleta(poblacion)         #Ruleta es lista de trayectorias
-    for _ in range (0,int((len(poblacion)-len(hijos))/2)):
+    for _ in range (11,int((len(poblacion)-len(hijos))/2)):
 
         padre1 = random.choice(ruleta)  #padre 1 y 2 son trayectorias seleccionadas
         padre2 = random.choice(ruleta)  #al azar de la ruleta
         
         if (random.random()<=prob_crossover):       #probabilidad de crossover
-            #padre1,padre2 = ciclicCrossover (padre1,padre2)
-            pass    #borrar esta linea cuando ande el crossover
+            padre1,padre2 = ciclicCrossover (padre1,padre2)
+            #pass    #borrar esta linea cuando ande el crossover
         
         if (random.random()<=prob_mutacion):     #probabilidad de mutacion
             padre1 = mutar(padre1)              
