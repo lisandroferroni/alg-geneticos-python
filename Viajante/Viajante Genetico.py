@@ -71,17 +71,15 @@ def calc_distance(lat1, lon1, lat2, lon2):
     c = 2*asin(sqrt(a))
     return (R * c)
 
-def crearPoblacionInicial(num):
+def crearPoblacionInicial():
     poblacionInicial = []
     for _ in range (0,cantIndividuos):
         trayectoria = None
         trayectoria = []        #vacio trayectoria (sin esto quedan todas iguales)
         for i in range (0,23):  
-            trayectoria.extend([i]) #crea una lista con enteros del 0 al 22
-        trayectoria.pop(num)        #Elimina el num de ciudad inicial de la trayectoria   
+            trayectoria.extend([i]) #crea una lista con enteros del 0 al 22   
         random.shuffle(trayectoria) #Mezcla trayectoria
-        trayectoria.insert(0,num)
-        trayectoria.extend([num])   #Ciudad inicial, al principio y al final de la trayectoria
+        trayectoria.extend([trayectoria[0]])   #Ciudad inicial, al principio y al final de la trayectoria
         poblacionInicial.extend([Cromosoma(trayectoria)])   #Crea nuevo cromosoma con trayectoria aleatoria
     return poblacionInicial         #Devuelve lista con @cantIndividuos cromosomas 
 
@@ -111,7 +109,7 @@ def calcularFitness3 (poblacion):
     total = 0.0
     valor = []
     for x in range (0, len(poblacion)): 
-        dist = poblacion[x].getDistancia()/10000  #dividido por mil para que quede de dos cifras como max
+        dist = poblacion[x].getDistancia()/5000  #dividido por mil para que quede de dos cifras como max
         valor.extend([exp(dist)])
         total = total + 1/valor[x]
     for x in range (0, len(poblacion)):
@@ -135,19 +133,15 @@ def calcularFitness2 (poblacion):  #muy impresiso, quedan todos fitnes iguales
 
 #crossover ciclico
 def ciclicCrossover(padre1,padre2):
-    posActual=1 #variable aux 
+    posActual=0 #variable aux 
 
     hijo1=[] #instancio los hijos
     hijo2=[]
-    hijo1.append(num)
-    hijo2.append(num) 
-    for i in range(0, len(padre1)-2):   #les pongo a todos menos uno para indicar que no estan asignados     
+    for _ in range(0, len(padre1)-1):   #les pongo a todos menos uno para indicar que no estan asignados     
         hijo1.append(-1)
         hijo2.append(-1)
-    hijo1.append(num)
-    hijo2.append(num)
 
-    aux=padre1[1] #primer paso del ciclico
+    aux=padre1[0] #primer paso del ciclico
     
     while aux not in hijo1: #condicion de fin de ciclo
         hijo1[posActual] = aux
@@ -157,7 +151,7 @@ def ciclicCrossover(padre1,padre2):
         #aux=hijo1[posActual]
         #hijo1[posActual]=padre1[padre2.index(padre1)]
 
-    for j in range(1, len(padre1)-1):
+    for j in range(0, len(padre1)-1):
         if (hijo1[j] == -1):
             hijo1[j] = padre2[j]
             hijo2[j] = padre1[j]
@@ -165,6 +159,9 @@ def ciclicCrossover(padre1,padre2):
             hijo2[j] = padre2[j]  
     #hijox1= Cromosoma(hijo1)
     #hijox2= Cromosoma(hijo2)
+    
+    hijo1.append(hijo1[0])
+    hijo2.append(hijo2[0])
     return hijo1,hijo2
 
 def mutar (padre):    
@@ -199,8 +196,8 @@ def mostrarGrafica (grafica):
     plt.plot(lista1, label = "Mejor Valor")
     plt.plot(lista2, linestyle='--', label = "Peor Valor")
     plt.plot(lista3, linestyle='-.', label = "Promedio")
-    plt.legend(loc="lower right")
-    plt.ylim(10000.0, 30000.0)
+    plt.legend(loc="upper right")
+    plt.ylim(8000.0, 30000.0)
     plt.xlabel("Generacion")
     plt.ylabel("Distancia")
     plt.show()
@@ -282,21 +279,17 @@ def algoritmoPrincipal(poblacion):
 
 
 #variables
-ciclos=1000
-cantIndividuos=30
+ciclos=250
+cantIndividuos=50
 prob_crossover=0.9
-prob_mutacion=0.1
+prob_mutacion=0.2
 
 #Main
 
 ciudades = cargaCiudades()
-print ("Ingrese num ciudad inicial (0-22)")
-printCiudades(ciudades)
-num = int(input())
-#num = 0
 grafica=[]
 
-poblacion = crearPoblacionInicial(num)
+poblacion = crearPoblacionInicial()
 grafica.extend([calcularLineaGrafica(poblacion)])
 
 for _ in range (0,ciclos):
