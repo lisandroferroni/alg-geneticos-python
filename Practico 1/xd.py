@@ -82,7 +82,7 @@ def crossover (poblacion):
             for x in range (0,len(cromosoma2_bin)):
                 aux[x] = cromosoma2_bin[x]
 
-            for x in range (puntoCorte,len(cromosoma2_bin - 1)):  #crossover desde el punto corte hasta fin
+            for x in range (puntoCorte,len(cromosoma2_bin)):  #crossover desde el punto corte hasta fin
                 cromosoma2_bin[x] = cromosoma1_bin[x]
                 cromosoma1_bin[x] = aux[x]
         
@@ -161,7 +161,7 @@ grafica.extend([calcularLineaGrafica(poblacion)])
 print(grafica[0].getMejor_bin(),"\t",grafica[0].getMejor(), "\t", grafica[0].getPeor(), "\t", grafica[0].getPromedio())
 
 for x in range (0,ciclos):
-    
+
     calcularFitness(poblacion)
     poblacion=crossover(poblacion)
     
